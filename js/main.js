@@ -5,6 +5,7 @@ $(function() {
 
 	var brush = {
 		color: 'black',
+		transparency: 0.5,
 		width: 3,
 		lineCap: 'butt',
 		shadowBlur: 0,
@@ -16,11 +17,18 @@ $(function() {
 		},
 		setSize: function(size) {
 			this.width = size;
+		},
+		setTransparency: function(transparency) {
+			this.transparency = transparency;
 		}
 	};
 	var x = [0], 
 		y = [0];
-	var color, width, cap, i=0;
+	var color, 
+		width, 
+		cap, 
+		transparency, 
+		i=0;
 
 	function init() {
 		if (art) {
@@ -42,12 +50,19 @@ $(function() {
 			palette.fillStyle = greyGrad;
 			palette.fillRect(0,60,640,80);
 			
-			$( "#slider" ).slider({
-			  range: "min",
-			  value: 3,
-			  min: 1,
-			  max: 32,
-			  change: function( event, ui ) { width = true; }
+			$("#sizeSlider").slider({
+				range: "min",
+				value: 3,
+				min: 1,
+				max: 64,
+				change: function( event, ui ) { width = true; }
+			});
+			$("#transparencySlider").slider({
+				range: "min",
+				value: 5,
+				min: 1,
+				max: 10,
+				change: function( event, ui ) { transparency = true; }
 			});
 		}
 	};
@@ -58,6 +73,8 @@ $(function() {
 	    ctx.shadowBlur = 3;
 	    ctx.shadowColor = brush.color;
 	    ctx.strokeStyle = brush.color;
+	    ctx.globalAlpha = brush.transparency;
+	    console.log(ctx.globalAlpha + " " + brush.transparency);
 	    ctx.lineWidth = brush.width;
 	    ctx.lineCap = brush.lineCap;
 	    ctx.moveTo(x[0], y[0]);
@@ -67,7 +84,8 @@ $(function() {
 	    ctx.stroke();
 
 	    if (color) { brush.setColor(color[0], color[1], color[2]); color = null; }
-	    if (width) { brush.setSize($("#slider").slider( "value" )); width = false; }
+		if (transparency) { brush.setTransparency($("#transparencySlider").slider("value") / 10); transparency = false; }
+	    if (width) { brush.setSize($("#sizeSlider").slider("value")); width = false; }
 	    if (cap) { brush.setLineCap($("#lineStyle option:selected").val()); cap = false; }
 	};
 
@@ -98,28 +116,27 @@ $(function() {
 			makeStroke(this.getContext('2d'));
 		}
 	});
+	
 	$('#undo').click(function(e) {
 		scratch.clearRect(0, 0, scratch.canvas.width, scratch.canvas.height);
 	    x = [0];
 	    y = [0];
 	});
 	$('#clear').click(function(e) {
-		art.clearRect(0, 0, art.canvas.width, art.canvas.height);
-		scratch.clearRect(0, 0, scratch.canvas.width, scratch.canvas.height);
+		$('.art').each(function(index) { this.getContext('2d').clearRect(0, 0, this.getContext('2d').canvas.width, this.getContext('2d').canvas.height); });
+		$('.scratch').each(function(index) { this.getContext('2d').clearRect(0, 0, this.getContext('2d').canvas.width, this.getContext('2d').canvas.height); });
 		x = [0];
 	    y = [0];
 	});
 	$('#lineStyle').change(function() {
 		cap = true;
-		//brush.setLineCap($("#lineStyle option:selected").val());
 	});
-	// $('#lineSize').change(function() {
-// 		width = true;
-// 		//brush.setSize($("#lineSize option:selected").val());
-// 	});
 
 	$('#addLayer').click(function(e) {
 		i = i + 1;
 		$('#layer0').clone(true, true).attr("id", "layer"+i).appendTo("#canvases");
+		$('#layerlist').append('<li>Layer '+i+'</li>');
+		art = $('#layer'+i+' > .art').get(0).getContext('2d');
+		scratch = $('#layer'+i+' > .scratch').get(0).getContext('2d');
 	});
 });
