@@ -87,6 +87,11 @@ textarea {
     padding: 0;
 }
 
+#layers { float: right; width: 320px; }
+#layerlist .ui-selecting { background: #FECA40; }
+#layerlist .ui-selected {border:1px solid #999;background:#ccd232 url(../js/vendor/jquery-ui-1.10.3.custom/css/hot-sneaks/images/ui-bg_diagonals-small_75_ccd232_40x40.png) 50% 50% repeat;font-weight:bold;color:#212121}
+#layerlist { list-style-type: none; margin: 0; padding: 0; }
+#layerlist li { margin: 3px; padding: 0.4em; font-size: 1em; height: 18px; }
 
 
 

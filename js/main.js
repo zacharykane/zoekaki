@@ -64,17 +64,22 @@ $(function() {
 				max: 10,
 				change: function( event, ui ) { transparency = true; }
 			});
+			$("button").button();
+			$("#layerlist").selectable({
+				selected: function(e, ui) {
+					var select = $(ui.selected).attr('class').split(' ')[0];
+				}
+			});
 		}
 	};
 
 	function makeStroke(ctx) {
 	    var i;
 	    ctx.beginPath();
-	    ctx.shadowBlur = 3;
+	    ctx.shadowBlur = 2;
 	    ctx.shadowColor = brush.color;
 	    ctx.strokeStyle = brush.color;
 	    ctx.globalAlpha = brush.transparency;
-	    console.log(ctx.globalAlpha + " " + brush.transparency);
 	    ctx.lineWidth = brush.width;
 	    ctx.lineCap = brush.lineCap;
 	    ctx.moveTo(x[0], y[0]);
@@ -99,7 +104,7 @@ $(function() {
 	});
 
 	$('.scratch').mousedown(function(e){
-		//scratch.clearRect(0, 0, scratch.canvas.width, scratch.canvas.height);
+		$('.scratch').each(function(index) { this.getContext('2d').clearRect(0, 0, this.getContext('2d').canvas.width, this.getContext('2d').canvas.height); });
 		this.getContext('2d').clearRect(0, 0, scratch.canvas.width, scratch.canvas.height);
 		//makeStroke(art);
 		makeStroke($(this).siblings('.art')[0].getContext('2d'));
@@ -135,7 +140,7 @@ $(function() {
 	$('#addLayer').click(function(e) {
 		i = i + 1;
 		$('#layer0').clone(true, true).attr("id", "layer"+i).appendTo("#canvases");
-		$('#layerlist').append('<li>Layer '+i+'</li>');
+		$('#layerlist').append('<li">Layer '+i+'</li>');
 		art = $('#layer'+i+' > .art').get(0).getContext('2d');
 		scratch = $('#layer'+i+' > .scratch').get(0).getContext('2d');
 	});

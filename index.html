@@ -17,6 +17,13 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
+    	<div id="layers">
+			<label>Layers:</label>
+			<button id="addLayer">New Layer!</button>
+			<ul id="layerlist">
+				<li class="layer0">Layer 0</li>
+			</ul>
+		</div>
     	<div id="canvases">
     		<div id="layer0">
 		        <canvas class="art" width="640" height="480">
@@ -29,13 +36,12 @@
 		<canvas id="palette" width="640" height="80">
 		</canvas>
 		<div id="control-panel">
-			<button id="clear" class="ui-button ui-widget ui-state-default ui-corner-all">Clear</button>
-			<button id="undo" class="ui-button ui-widget ui-state-default ui-corner-all">Undo</button>
+			<button id="clear">Clear</button>
+			<button id="undo">Undo</button>
 			<select id="lineStyle">
 				<option value="butt" selected>Square</option> 
 				<option value="round">Round</option>
 			</select>
-			<button id="addLayer" class="ui-button ui-widget ui-state-default ui-corner-all">New Layer!</button>
 			<hr/>
 			<label>Brush Size:</label>
 			<div id="sizeSlider"></div>
@@ -43,10 +49,6 @@
 			<label>Transparency:</label>
 			<div id="transparencySlider"></div>
 			<hr/>
-			<label>Layers:</label>
-			<ul id="layerlist">
-				<li>Layer 0</li>
-			</ul>
 		</div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
